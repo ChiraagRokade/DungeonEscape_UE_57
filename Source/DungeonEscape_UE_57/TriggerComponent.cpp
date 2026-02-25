@@ -17,16 +17,37 @@ void UTriggerComponent::BeginPlay()
 {
     Super::BeginPlay();
 
-    if(MoverActor != nullptr)
+    if(MoverActor)
     {
         Mover = MoverActor->FindComponentByClass<UMover>();
     }else
     {
         UE_LOG(LogTemp, Warning, TEXT("MoverActor is not set in TriggerComponent"));
     }
+
+    if(IsPressurePlate){
+        OnComponentBeginOverlap.AddDynamic(this, &UTriggerComponent::OnOverlapBegin);
+        OnComponentEndOverlap.AddDynamic(this, &UTriggerComponent::OnOverlapEnd);
+    }
 }
 
 void UTriggerComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
 {
     Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+}
+
+void UTriggerComponent::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+    if(Mover)
+    {
+        Mover->bShouldMove = true;
+    }
+}
+
+void UTriggerComponent::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+    if(Mover)
+    {
+        Mover->bShouldMove = false;
+    }
 }
