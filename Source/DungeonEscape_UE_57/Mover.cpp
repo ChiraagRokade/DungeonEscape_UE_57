@@ -22,6 +22,7 @@ void UMover::BeginPlay()
 
 	// ...
 	StartLocation = GetOwner()->GetActorLocation();
+	SetShouldMove(false);
 }
 
 
@@ -30,16 +31,6 @@ void UMover::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponent
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	if (bShouldMove)
-	{
-		// Target location is start location + move offset
-		TargetLocation = StartLocation + MoveOffset;
-
-	}else
-	{
-		// Target location is start location
-		TargetLocation = StartLocation;
-	}
 	FVector CurrentLocation = GetOwner()->GetActorLocation();
 	bReachedTarget = CurrentLocation.Equals(TargetLocation);
 	if (!bReachedTarget)
@@ -49,5 +40,27 @@ void UMover::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponent
 		GetOwner()->SetActorLocation(NewLocation);
 	}
 	
+}
+
+bool UMover::GetShouldMove()
+{
+	return false;
+}
+
+void UMover::SetShouldMove(bool NewShouldMove)
+{
+	bShouldMove = NewShouldMove;
+
+	if (bShouldMove)
+	{
+		// Target location is start location + move offset
+		TargetLocation = StartLocation + MoveOffset;
+
+	}
+	else
+	{
+		// Target location is start location
+		TargetLocation = StartLocation;
+	}
 }
 

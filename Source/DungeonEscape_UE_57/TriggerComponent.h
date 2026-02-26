@@ -44,4 +44,9 @@ public:
 	/** called when something leaves the sphere component */
 	UFUNCTION()
 	void OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+	UPROPERTY(VisibleAnywhere)
+	bool bIsTriggered = false;
+	
+	void Trigger(bool NewTriggeredState);
 };

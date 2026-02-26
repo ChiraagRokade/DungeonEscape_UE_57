@@ -20,13 +20,6 @@ void UTriggerComponent::BeginPlay()
     if(MoverActor)
     {
         Mover = MoverActor->FindComponentByClass<UMover>();
-   //     if(Mover){
-   //         UE_LOG(LogTemp, Warning, TEXT("Succesfully found the mover component"));
-			//Mover->bShouldMove = true;
-   //     }
-   //     else {
-   //         UE_LOG(LogTemp, Warning, TEXT("not found the mover component"));
-   //     }
     }else
     {
         UE_LOG(LogTemp, Warning, TEXT("MoverActor is not set in TriggerComponent"));
@@ -45,16 +38,27 @@ void UTriggerComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 
 void UTriggerComponent::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-    if(Mover)
-    {
-        Mover->bShouldMove = true;
+    if (OtherActor && OtherActor->ActorHasTag("PressurePlateActivator")) {
+        if (!bIsTriggered) {
+            Trigger(true);
+        }
     }
 }
 
 void UTriggerComponent::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-    if(Mover)
+    if (OtherActor && OtherActor->ActorHasTag("PressurePlateActivator")) {
+        if(bIsTriggered){
+            Trigger(false);
+		}
+    }
+}
+
+void UTriggerComponent::Trigger(bool NewTriggeredState)
+{
+    bIsTriggered = NewTriggeredState;
+    if (Mover)
     {
-        Mover->bShouldMove = false;
+        Mover->SetShouldMove(bIsTriggered);
     }
 }
