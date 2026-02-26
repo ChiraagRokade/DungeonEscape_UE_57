@@ -12,7 +12,7 @@
 /**
  * 
  */
-UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
+UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class DUNGEONESCAPE_UE_57_API UTriggerComponent : public UBoxComponent
 {
 	GENERATED_BODY()

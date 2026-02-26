@@ -20,12 +20,19 @@ void UTriggerComponent::BeginPlay()
     if(MoverActor)
     {
         Mover = MoverActor->FindComponentByClass<UMover>();
+   //     if(Mover){
+   //         UE_LOG(LogTemp, Warning, TEXT("Succesfully found the mover component"));
+			//Mover->bShouldMove = true;
+   //     }
+   //     else {
+   //         UE_LOG(LogTemp, Warning, TEXT("not found the mover component"));
+   //     }
     }else
     {
         UE_LOG(LogTemp, Warning, TEXT("MoverActor is not set in TriggerComponent"));
     }
 
-    if(IsPressurePlate){
+    if(!IsPressurePlate){
         OnComponentBeginOverlap.AddDynamic(this, &UTriggerComponent::OnOverlapBegin);
         OnComponentEndOverlap.AddDynamic(this, &UTriggerComponent::OnOverlapEnd);
     }
