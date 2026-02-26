@@ -49,4 +49,7 @@ public:
 	bool bIsTriggered = false;
 	
 	void Trigger(bool NewTriggeredState);
+
+	UPROPERTY(VisibleAnywhere)
+	int32 ActivatorCount = 0;
 };
