@@ -59,11 +59,19 @@ void ADungeonEscape_UE_57Character::SetupPlayerInputComponent(UInputComponent* P
 		// Looking/Aiming
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ADungeonEscape_UE_57Character::LookInput);
 		EnhancedInputComponent->BindAction(MouseLookAction, ETriggerEvent::Triggered, this, &ADungeonEscape_UE_57Character::LookInput);
+
+		// Interacting
+		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &ADungeonEscape_UE_57Character::Interact);
 	}
 	else
 	{
 		UE_LOG(LogDungeonEscape_UE_57, Error, TEXT("'%s' Failed to find an Enhanced Input Component! This template is built to use the Enhanced Input system. If you intend to use the legacy system, then you will need to update this C++ file."), *GetNameSafe(this));
 	}
+}
+
+void ADungeonEscape_UE_57Character::Interact()
+{
+	UE_LOG(LogDungeonEscape_UE_57, Log, TEXT("'%s' Interact action triggered. Implement interaction logic in ADungeonEscape_UE_57Character::Interact()"), *GetNameSafe(this));
 }
 
 
