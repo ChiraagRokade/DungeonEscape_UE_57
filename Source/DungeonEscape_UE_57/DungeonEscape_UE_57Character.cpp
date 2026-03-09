@@ -71,7 +71,32 @@ void ADungeonEscape_UE_57Character::SetupPlayerInputComponent(UInputComponent* P
 
 void ADungeonEscape_UE_57Character::Interact()
 {
-	UE_LOG(LogDungeonEscape_UE_57, Log, TEXT("'%s' Interact action triggered. Implement interaction logic in ADungeonEscape_UE_57Character::Interact()"), *GetNameSafe(this));
+	FVector Start = FirstPersonCameraComponent->GetComponentLocation();
+	FVector End = Start + (FirstPersonCameraComponent->GetForwardVector() * MaxInteractionDistance);
+	DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 5.0f);
+	FHitResult HitResult;
+
+	FCollisionShape Sphere = FCollisionShape::MakeSphere(InteractionSphereRadius);
+	DrawDebugSphere(GetWorld(), End, InteractionSphereRadius, 12, FColor::Blue, false, 5.0f);
+
+	bool HasHit = GetWorld()->SweepSingleByChannel(
+		HitResult,
+		Start,
+		End,
+		FQuat::Identity,
+		ECC_GameTraceChannel2,
+		Sphere
+	);
+
+	if (HasHit)
+	{
+		AActor* HitActor = HitResult.GetActor();
+		UE_LOG(LogDungeonEscape_UE_57, Log, TEXT("Hit Actor: %s"), *GetNameSafe(HitActor));
+	}
+	else
+	{
+		UE_LOG(LogDungeonEscape_UE_57, Log, TEXT("No Actor Hit"));
+	}
 }
 
 
