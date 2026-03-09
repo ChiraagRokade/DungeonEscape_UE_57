@@ -98,12 +98,12 @@ void ADungeonEscape_UE_57Character::Interact()
 		if (HitActor->ActorHasTag("CollectableItem"))
 		{
 			// HitActor is a collectable item
-			UE_LOG(LogDungeonEscape_UE_57, Log, TEXT("CollectableItem"));
-
 			ACollectableItem* CollectableItem = Cast<ACollectableItem>(HitActor);
 			if (CollectableItem) {
-				UE_LOG(LogDungeonEscape_UE_57, Log, TEXT("Collectable Item with name %s"), *CollectableItem->ItemName);
+				ItemList.Add(CollectableItem->ItemName);
+				CollectableItem->Destroy();
 			}
+
 			
 		}
 		else if(HitActor->ActorHasTag("Lock"))
@@ -113,7 +113,20 @@ void ADungeonEscape_UE_57Character::Interact()
 
 			ALock* Lock = Cast<ALock>(HitActor);
 			if (Lock) {
-				UE_LOG(LogDungeonEscape_UE_57, Log, TEXT("Lock with name %s"), *Lock->KeyItemName);
+				// 1 - Is the lock empty?
+				if (!Lock->GetIsKeyPlaced()) {
+					// 2 - Do we have the KeyItemName in out ItemList?
+					int32 ItemRemoved = ItemList.RemoveSingle(Lock->KeyItemName);
+					// 3 - Remove the KeyItemName from our ItemList if we have it
+					if (ItemRemoved) {
+						Lock->SetIsKeyPlaced(true);
+					}
+					else {
+						UE_LOG(LogDungeonEscape_UE_57, Log, TEXT("Key not in inventory"));
+					}
+				}
+				// 4 - Activate the lock
+				//Lock->SetIsKeyPlaced(false);
 			}
 		}
 	}
