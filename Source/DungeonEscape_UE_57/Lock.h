@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "TriggerComponent.h"
+#include "Components/StaticMeshComponent.h"
 #include "Lock.generated.h"
 
 UCLASS()

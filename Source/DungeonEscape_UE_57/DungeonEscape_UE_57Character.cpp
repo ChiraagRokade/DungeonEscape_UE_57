@@ -125,6 +125,14 @@ void ADungeonEscape_UE_57Character::Interact()
 						UE_LOG(LogDungeonEscape_UE_57, Log, TEXT("Key not in inventory"));
 					}
 				}
+				else
+				{
+					// Lock has a key inside!
+					// Add the KeyItemName into our ItemList
+					// Deactivate the lock
+					ItemList.Add(Lock->KeyItemName);
+					Lock->SetIsKeyPlaced(false);
+				}
 				// 4 - Activate the lock
 				//Lock->SetIsKeyPlaced(false);
 			}
